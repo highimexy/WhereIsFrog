@@ -59,6 +59,9 @@ flutter:
 
   assets:
     - assets/images/frog.webp
+    - assets/images/clock.webp
+    - assets/images/ding.webp
+    - assets/images/background.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
