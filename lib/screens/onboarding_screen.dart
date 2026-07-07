@@ -89,8 +89,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(title: 'Where Is Frog'),
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation1, animation2) => const HomeScreen(title: 'Where Is Frog'),
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
                       ),
                     );
                   },
