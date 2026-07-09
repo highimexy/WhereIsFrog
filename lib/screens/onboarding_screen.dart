@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
+import 'package:where_is_frog/screens/permission_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key, required this.title});
@@ -90,13 +90,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     Navigator.pushReplacement(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) => const HomeScreen(title: 'Where Is Frog'),
+                        pageBuilder: (context, animation1, animation2) => const PermissionScreen(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),
                     );
                   },
-                  child: const Text('START'),
+                  child: const Text('Szukaj'),
                 ),
                 const SizedBox(height: 32),
               ],
