@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:where_is_frog/widgets/compass.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -17,12 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Text('Kompas ',
-          style: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: const Compass(),
       ),
     );
   }
