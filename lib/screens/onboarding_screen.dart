@@ -66,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         color: Colors.white,
                         shadows: [
                           Shadow(
-                            color: Colors.black.withOpacity(0.8),
+                            color: Colors.black.withValues(alpha: 0.8),
                             blurRadius: 15,
                             offset: const Offset(0, 4),
                           ),
@@ -78,7 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: 24),
 
                 Text(
-                  'Znajdź drogę do zielonego sklepu\nza pomocą kompasu!\nPoczuj się jak prawdziwy zabi wedrowca.',
+                  'Znajdź drogę do najbliższego monopolowego\nza pomocą pirackiego kompasu!\nPoczuj się jak prawdziwy żabi wędrowiec.',
                   style: textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
