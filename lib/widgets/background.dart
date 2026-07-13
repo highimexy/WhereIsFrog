@@ -16,7 +16,7 @@ class Background extends StatelessWidget {
           fit: BoxFit.fitWidth,
           repeat: ImageRepeat.repeat,
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.2),
+            Colors.black.withValues(alpha: 0.2),
             BlendMode.dstATop,
           ),
         ),
