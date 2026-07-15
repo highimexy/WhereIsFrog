@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-//Ekrany
-import 'screens/splash_screen.dart';
+//Router
+import 'core/router/app_router.dart';
 import 'theme/app_theme.dart';
 
 //Widgety
@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Where Is Frog',
+    return MaterialApp.router(
+      title: 'Few Bears',
       theme: AppTheme.dark,
       builder: (context, child) => Background(child: child!),
-      home: const SplashScreen(title: "Where is Frog"),
+      routerConfig: appRouter,
     );
   }
 }
