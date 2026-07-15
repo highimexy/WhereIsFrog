@@ -4,17 +4,26 @@ import 'package:google_fonts/google_fonts.dart';
 class AppColors {
   AppColors._();
 
-  // Kolorystyka bazy (Gliniany kompas i żaba)
-  static const Color background = Color(0xFF1E221E); // Ciemna, zgaszona zieleń
-  static const Color foreground = Color(0xFFEBE6D9); // Kremowa tarcza kompasu
-  static const Color primary = Color(0xFF557C55); // Żabia, gliniana zieleń
-  static const Color secondary = Color(0xFF8B5A2B); // Brąz/Miedź obudowy kompasu
-  static const Color accent = Color(0xFFD93829); // Czerwień wskazówki
+  // Kolorystyka bazy (Few Bears — drewno, mosiądz, kość słoniowa)
+  static const Color background = Color(0xFF2B2620); // Ciemny grafit-drewno
+  static const Color foreground = Color(0xFFEFE9DC); // Kość słoniowa (tekst/tarcza)
+  static const Color primary = Color(0xFFB08D4C); // Mosiądz
+  static const Color secondary = Color(0xFF3A342B); // Ciemny orzech / drewno
+  static const Color accent = Color(0xFF6E2A26); // Bordo — igła kompasu
 
   static const Color error = Color(0xFFef4444);
   static const Color correct = Color(0xFF34d399);
   static const Color wrong = Color(0xFFf87171);
-  static const Color roughCard = Color(0xFF262C27); // Lekko jaśniejsze tło pod widgety
+  static const Color roughCard = Color(0xFF241F19); // Karty na ciemnym tle
+
+  // Nowe: jasne tło / spiżarnia / akcenty
+  static const Color ivory = Color(0xFFF4F1EA); // Studio white (splash/hero jasny)
+  static const Color ivoryDeep = Color(0xFFE8E4D8); // Dół gradientu / marmur tarczy
+  static const Color brassLight = Color(0xFFD9B87A); // Highlight, aktywna igła
+  static const Color fur = Color(0xFF8B5E3C); // Łapki misia
+  static const Color textOnDark = Color(0xFFEFE9DC);
+  static const Color textOnLight = Color(0xFF211D18);
+  static const Color textSecondary = Color(0xFF6B6152);
 }
 
 class AppTheme {
@@ -41,12 +50,12 @@ class AppTheme {
         onSurface: AppColors.foreground,
       ),
       textTheme: nunitoTextTheme.copyWith(
-        // Główne nagłówki - DynaPuff (Gliniany, zabawny vibe)
-        displayLarge: GoogleFonts.dynaPuff(
+        // Główne nagłówki - Fraunces (vintage, render-realistyczny vibe)
+        displayLarge: GoogleFonts.fraunces(
           fontSize: 40, fontWeight: FontWeight.w700, color: AppColors.foreground),
-        headlineMedium: GoogleFonts.dynaPuff(
+        headlineMedium: GoogleFonts.fraunces(
           fontSize: 32, fontWeight: FontWeight.w700, color: AppColors.foreground),
-        headlineSmall: GoogleFonts.dynaPuff(
+        headlineSmall: GoogleFonts.fraunces(
           fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.foreground),
 
         // Tekst użytkowy - Nunito (Miękki, ale czytelny)
@@ -68,7 +77,7 @@ class AppTheme {
         foregroundColor: AppColors.foreground,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.dynaPuff(
+        titleTextStyle: GoogleFonts.fraunces(
           fontSize: 22, fontWeight: FontWeight.w600, color: AppColors.foreground),
       ),
       cardColor: AppColors.roughCard,

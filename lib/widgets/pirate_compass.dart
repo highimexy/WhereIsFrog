@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'loading.dart';
 
-/// Kompas w klimacie pirackim: mosiężna, oktagonalna obudowa z pergaminową
-/// tarczą, przechylona w pseudo-3D (perspective transform), z igłą
-/// wskazującą namiar (bearing) na cel niezależnie od obrotu telefonu.
+/// Kompas Few Bears: mosiężna, oktagonalna obudowa z marmurową tarczą,
+/// przechylona w pseudo-3D (perspective transform), z igłą wskazującą
+/// namiar (bearing) na cel niezależnie od obrotu telefonu.
 class PirateCompass extends StatefulWidget {
   const PirateCompass({super.key, required this.bearingToTarget});
 
@@ -65,14 +65,14 @@ class _PirateCompassPainter extends CustomPainter {
 
   final double needleAngle;
 
-  static const _wood = Color(0xFF3B2A1A);
-  static const _woodLight = Color(0xFF5A4326);
-  static const _brass = Color(0xFFC9A227);
-  static const _brassDark = Color(0xFF8A6E1D);
-  static const _parchment = Color(0xFFE8DEB8);
-  static const _parchmentShadow = Color(0xFFC9BB84);
+  static const _wood = Color(0xFF2B2620);
+  static const _woodLight = Color(0xFF3A342B);
+  static const _brass = Color(0xFFB08D4C);
+  static const _brassDark = Color(0xFF8A6E39);
+  static const _parchment = Color(0xFFE8E4D8);
+  static const _parchmentShadow = Color(0xFFCFC9B8);
   static const _ink = Color(0xFF3A2E1F);
-  static const _needleRed = Color(0xFF8B1E1E);
+  static const _needleRed = Color(0xFF6E2A26);
 
   @override
   void paint(Canvas canvas, Size size) {
