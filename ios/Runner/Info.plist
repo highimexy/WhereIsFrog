@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Potrzebujemy lokalizacji, aby znaleźć najbliższy sklep monopolowy.</string>
+	<string>Potrzebujemy lokalizacji, żeby miś wskazał kompasem najbliższe piwo.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Potrzebujemy lokalizacji, aby znaleźć najbliższy sklep monopolowy.</string>
+	<string>Potrzebujemy lokalizacji, żeby miś wskazał kompasem najbliższe piwo.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Where Is Frog</string>
+	<string>Few Bears</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
