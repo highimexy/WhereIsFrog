@@ -8,19 +8,8 @@ class Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        image: DecorationImage(
-          image: const AssetImage('assets/images/background.webp'),
-          fit: BoxFit.fitWidth,
-          repeat: ImageRepeat.repeat,
-          colorFilter: ColorFilter.mode(
-            Colors.black.withValues(alpha: 0.2),
-            BlendMode.dstATop,
-          ),
-        ),
-      ),
+    return ColoredBox(
+      color: AppColors.background,
       child: child,
     );
   }
