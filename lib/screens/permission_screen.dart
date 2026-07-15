@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'home_screen.dart'; // Upewnij się, że import jest poprawny
+import 'package:go_router/go_router.dart';
+import 'package:where_is_frog/core/location_store.dart';
 
 class PermissionScreen extends StatefulWidget {
   const PermissionScreen({super.key});
@@ -24,7 +25,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
         setState(() => _isLocating = false);
         if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Bez lokalizacji nie znajdziemy monopolowego! 🏴‍☠️')),
+          const SnackBar(content: Text('Bez lokalizacji misie nie znajdą piwa. 🐻')),
         );
         return;
       }
@@ -44,7 +45,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
       setState(() => _isLocating = false);
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Włącz usługi lokalizacji (GPS), aby znaleźć skarb.')),
+        const SnackBar(content: Text('Włącz usługi lokalizacji (GPS), żeby miś mógł węszyć.')),
       );
       return;
     }
@@ -56,16 +57,10 @@ class _PermissionScreenState extends State<PermissionScreen> {
         ),
       );
 
+      LocationStore.instance.current = position;
+
       if (!context.mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(
-            title: 'Where Is Frog',
-            startingPosition: position,
-          ),
-        ),
-      );
+      context.go('/compass');
     } catch (_) {
       setState(() => _isLocating = false);
       if (!context.mounted) return;
@@ -89,13 +84,13 @@ class _PermissionScreenState extends State<PermissionScreen> {
               const Icon(Icons.location_on, size: 100, color: Colors.white),
               const SizedBox(height: 32),
               Text(
-                'Potrzebujemy Twojej lokalizacji',
+                'Misie muszą wiedzieć, gdzie jesteś',
                 style: textTheme.headlineSmall?.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
               Text(
-                'Aby kompas mógł wskazać Ci drogę do najbliższego sklepu monopolowego, musisz udostępnić swój GPS.',
+                'Żeby miś wskazał kompasem najbliższe piwo w okolicy, musisz udostępnić swój GPS.',
                 style: textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),

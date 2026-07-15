@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:where_is_frog/core/location_store.dart';
 import 'package:where_is_frog/services/store_locator_service.dart';
+import 'package:where_is_frog/widgets/bear_paws.dart';
 import 'package:where_is_frog/widgets/pirate_compass.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({
-    super.key,
-    required this.title,
-    required this.startingPosition,
-  });
+  const HomeScreen({super.key, this.startingPosition});
 
-  final String title;
-  final Position startingPosition;
+  final Position? startingPosition;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,18 +22,37 @@ class _HomeScreenState extends State<HomeScreen> {
   _SearchStatus _status = _SearchStatus.loading;
   NearestStore? _store;
   double _bearingToStore = 0;
+  Position? _position;
 
   @override
   void initState() {
     super.initState();
-    _search();
+    _resolvePosition();
+  }
+
+  Future<void> _resolvePosition() async {
+    try {
+      final position = widget.startingPosition ??
+          LocationStore.instance.current ??
+          await Geolocator.getCurrentPosition(
+            locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+          );
+      if (!mounted) return;
+      _position = position;
+      LocationStore.instance.current = position;
+      await _search();
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _status = _SearchStatus.error);
+    }
   }
 
   Future<void> _search() async {
+    if (_position == null) return;
     setState(() => _status = _SearchStatus.loading);
 
     try {
-      final store = await _locator.findNearestAlcoholShop(widget.startingPosition);
+      final store = await _locator.findNearestAlcoholShop(_position!);
       if (!mounted) return;
 
       if (store == null) {
@@ -45,8 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
       final bearing = Geolocator.bearingBetween(
-        widget.startingPosition.latitude,
-        widget.startingPosition.longitude,
+        _position!.latitude,
+        _position!.longitude,
         store.latitude,
         store.longitude,
       );
@@ -62,11 +78,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _retry() async {
+    if (_position == null) {
+      await _resolvePosition();
+    } else {
+      await _search();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Few Bears'),
       ),
       body: Center(child: _buildBody(context)),
     );
@@ -82,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const CircularProgressIndicator(),
             const SizedBox(height: 24),
-            Text('Szukam najbliższego skarbu...', style: textTheme.bodyLarge),
+            Text('Misie węszą najbliższe piwo...', style: textTheme.bodyLarge),
           ],
         );
 
@@ -93,12 +117,12 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'W pobliżu nie znaleziono żadnego monopolowego. 🏝️',
+                'W pobliżu żadnego piwa. Misie są smutne. 🐻',
                 style: textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              ElevatedButton(onPressed: _search, child: const Text('SZUKAJ PONOWNIE')),
+              ElevatedButton(onPressed: _retry, child: const Text('SZUKAJ PONOWNIE')),
             ],
           ),
         );
@@ -110,12 +134,12 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Nie udało się połączyć z mapą skarbów. Sprawdź internet.',
+                'Misie zgubiły sygnał. Sprawdź internet.',
                 style: textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              ElevatedButton(onPressed: _search, child: const Text('SPRÓBUJ PONOWNIE')),
+              ElevatedButton(onPressed: _retry, child: const Text('SPRÓBUJ PONOWNIE')),
             ],
           ),
         );
@@ -125,12 +149,21 @@ class _HomeScreenState extends State<HomeScreen> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PirateCompass(bearingToTarget: _bearingToStore),
-            const SizedBox(height: 32),
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                PirateCompass(bearingToTarget: _bearingToStore),
+                Transform.translate(
+                  offset: const Offset(0, 28),
+                  child: const BearPaws(width: 260),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
             Text(store.name, style: textTheme.headlineSmall, textAlign: TextAlign.center),
             const SizedBox(height: 8),
             Text(
-              '${_formatDistance(store.distanceMeters)} stąd',
+              '${_formatDistance(store.distanceMeters)} do najbliższego piwa',
               style: textTheme.bodyLarge,
             ),
             if (store.openingHours != null) ...[

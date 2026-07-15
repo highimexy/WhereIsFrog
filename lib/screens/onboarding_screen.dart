@@ -1,106 +1,193 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:where_is_frog/screens/permission_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:where_is_frog/core/first_launch.dart';
+import 'package:where_is_frog/theme/app_theme.dart';
+import 'package:where_is_frog/widgets/bear_with_compass.dart';
+import 'package:where_is_frog/widgets/staggered_reveal.dart';
 
-class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key, required this.title});
+class _Slide {
+  const _Slide({required this.title, required this.description, required this.decoration});
 
   final String title;
+  final String description;
+  final Widget Function() decoration;
+}
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  final _controller = PageController();
+  int _page = 0;
+
+  static final _slides = [
+    _Slide(
+      title: 'Few Bears',
+      description: 'Kompas naszych misiów wskaże Ci najbliższe dobre piwo.\nBear necessities. 🐻🍺',
+      decoration: () => const SizedBox.shrink(),
+    ),
+    _Slide(
+      title: 'Namierz piwo',
+      description: 'Zobacz, gdzie po drodze kupisz piwo — miś prowadzi Cię prosto tam.',
+      decoration: () => const Positioned(
+        right: 12,
+        top: 24,
+        child: _MapPinBadge(),
+      ),
+    ),
+    _Slide(
+      title: 'Zajrzyj do spiżarni',
+      description: 'Sprawdź, co mają w środku — zanim jeszcze wyjdziesz z domu.',
+      decoration: () => const Positioned(
+        bottom: -8,
+        child: _BottleShelfBadge(),
+      ),
+    ),
+  ];
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onCta() async {
+    if (_page < _slides.length - 1) {
+      _controller.nextPage(duration: const Duration(milliseconds: 380), curve: Curves.easeOutCubic);
+      return;
+    }
+    await FirstLaunch.markOnboardingCompleted();
+    if (!mounted) return;
+    context.go('/permission');
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final isLast = _page == _slides.length - 1;
 
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-
-                Text(
-                  'Witaj w aplikacji',
-                  style: textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-
-                Stack(
-                  alignment: Alignment.center,
-                  clipBehavior: Clip.none,
-                  children: [
-                    Positioned(
-                      left: 0,
-                      top: 10,
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                        child: ColorFiltered(
-                          colorFilter: const ColorFilter.mode(
-                            Colors.black, BlendMode.srcIn,
-                          ),
-                          child: Image.asset(
-                            'assets/images/frog.webp',
-                            width: 350,
-                            height: 350,
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView.builder(
+                controller: _controller,
+                itemCount: _slides.length,
+                onPageChanged: (index) => setState(() => _page = index),
+                itemBuilder: (context, index) {
+                  final slide = _slides[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Spacer(),
+                        StaggeredReveal(
+                          index: 0,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            clipBehavior: Clip.none,
+                            children: [
+                              const BearWithCompass(),
+                              slide.decoration(),
+                            ],
                           ),
                         ),
-                      ),
-                    ),
-                    Image.asset(
-                      'assets/images/frog.webp',
-                      width: 350,
-                      height: 350,
-                    ),
-                    Text(
-                      'Where Is Frog!?',
-                      style: textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withValues(alpha: 0.8),
-                            blurRadius: 15,
-                            offset: const Offset(0, 4),
+                        const SizedBox(height: 32),
+                        StaggeredReveal(
+                          index: 1,
+                          child: Text(
+                            slide.title,
+                            style: textTheme.headlineMedium,
+                            textAlign: TextAlign.center,
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 16),
+                        StaggeredReveal(
+                          index: 2,
+                          child: Text(
+                            slide.description,
+                            style: textTheme.bodyLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const Spacer(),
+                      ],
                     ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-
-                Text(
-                  'Znajdź drogę do najbliższego monopolowego\nza pomocą pirackiego kompasu!\nPoczuj się jak prawdziwy żabi wędrowiec.',
-                  style: textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-
-                const Spacer(),
-
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) => const PermissionScreen(),
-                        transitionDuration: Duration.zero,
-                        reverseTransitionDuration: Duration.zero,
-                      ),
-                    );
-                  },
-                  child: const Text('Szukaj'),
-                ),
-                const SizedBox(height: 32),
-              ],
+                  );
+                },
+              ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                _slides.length,
+                (index) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: index == _page ? 22 : 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: index == _page
+                        ? AppColors.primary
+                        : AppColors.primary.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: _onCta,
+              child: Text(isLast ? 'Szukaj' : 'Dalej'),
+            ),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MapPinBadge extends StatelessWidget {
+  const _MapPinBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppColors.roughCard,
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.primary, width: 2),
+      ),
+      child: const Icon(Icons.location_pin, color: AppColors.accent, size: 28),
+    );
+  }
+}
+
+class _BottleShelfBadge extends StatelessWidget {
+  const _BottleShelfBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(
+        3,
+        (i) => Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          width: 22,
+          height: 40,
+          decoration: BoxDecoration(
+            color: AppColors.accent.withValues(alpha: 0.8),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: AppColors.brassLight, width: 1.5),
           ),
         ),
       ),
