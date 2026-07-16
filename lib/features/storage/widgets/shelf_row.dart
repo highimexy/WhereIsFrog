@@ -39,7 +39,7 @@ class ShelfRow extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 12),
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
             child: SizedBox(
-              height: 210,
+              height: 240,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: beers.length,
