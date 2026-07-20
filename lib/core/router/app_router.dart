@@ -4,9 +4,11 @@ import 'package:where_is_frog/data/models/beer.dart';
 import 'package:where_is_frog/data/repositories/beer_repository.dart';
 import 'package:where_is_frog/features/storage/beer_detail_screen.dart';
 import 'package:where_is_frog/features/storage/storage_screen.dart';
+import 'package:where_is_frog/screens/age_gate_screen.dart';
 import 'package:where_is_frog/screens/home_screen.dart';
 import 'package:where_is_frog/screens/onboarding_screen.dart';
 import 'package:where_is_frog/screens/permission_screen.dart';
+import 'package:where_is_frog/screens/privacy_policy_screen.dart';
 import 'package:where_is_frog/screens/splash_screen.dart';
 import 'package:where_is_frog/widgets/main_shell.dart';
 
@@ -48,12 +50,21 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) => _slidePushPage(context, state, const SplashScreen()),
     ),
     GoRoute(
+      path: '/age-gate',
+      pageBuilder: (context, state) => _slidePushPage(context, state, const AgeGateScreen()),
+    ),
+    GoRoute(
       path: '/onboarding',
       pageBuilder: (context, state) => _slidePushPage(context, state, const OnboardingScreen()),
     ),
     GoRoute(
       path: '/permission',
       pageBuilder: (context, state) => _slidePushPage(context, state, const PermissionScreen()),
+    ),
+    GoRoute(
+      path: '/privacy-policy',
+      pageBuilder: (context, state) =>
+          _slidePushPage(context, state, const PrivacyPolicyScreen()),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => MainShell(navigationShell: navigationShell),

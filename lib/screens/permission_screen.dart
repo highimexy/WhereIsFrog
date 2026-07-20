@@ -108,6 +108,16 @@ class _PermissionScreenState extends State<PermissionScreen> {
                       )
                     : const Text('UDOSTĘPNIJ LOKALIZACJĘ'),
               ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () => context.push('/privacy-policy'),
+                child: Text(
+                  'Polityka prywatności',
+                  style: textTheme.bodySmall?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

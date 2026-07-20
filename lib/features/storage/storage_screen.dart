@@ -44,7 +44,16 @@ class _StorageScreenState extends State<StorageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Spiżarnia')),
+      appBar: AppBar(
+        title: const Text('Spiżarnia'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'Polityka prywatności',
+            onPressed: () => context.push('/privacy-policy'),
+          ),
+        ],
+      ),
       body: FutureBuilder<List<Beer>>(
         future: _beersFuture,
         builder: (context, snapshot) {
